@@ -13,11 +13,20 @@ type ConfigValue = {
   env: string;
   /**
    * The function that should be used to convert the value
-   * @default String
    * @example Number
+   * @default String
    */
-  type?: any;
+  type?: Function;
+  /**
+   * Whether or not this environment variable is required to be set
+   *
+   * _configurator_ will throw an error if this is `true` and the environment variable is not set
+   * @default false
+   */
   required?: boolean;
+  /**
+   * The default value to use, if any, if the environment variable is not set
+   */
   default?: any;
 };
 
@@ -55,9 +64,7 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
 
       childItem = {
         [key]:
-          envValue === undefined
-            ? typeFunc(value.default)
-            : value.type(envValue),
+          envValue === undefined ? typeFunc(value.default) : typeFunc(envValue),
       };
     } else if (isConfigNode(value)) {
       childItem = { [key]: buildConfigTree(value) };
