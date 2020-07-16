@@ -22,40 +22,50 @@ type ConfigValue = {
 };
 
 type ConfigNode = {
-  [key: string]: ConfigNode | ConfigValue;
+  [key: string]: ConfigNode | ConfigValue | string;
 };
 
-const isConfigValue = (obj: ConfigValue | ConfigNode): obj is ConfigValue =>
-  (obj as ConfigValue).type;
+const isConfigValue = (
+  obj: ConfigValue | ConfigNode | string
+): obj is ConfigValue => (obj as ConfigValue).env !== undefined;
 
-const isConfigNode = (obj: ConfigValue | ConfigNode): obj is ConfigNode =>
-  Object.entries(obj).length === 1;
+const isConfigNode = (
+  obj: ConfigValue | ConfigNode | string
+): obj is ConfigNode =>
+  Object.entries(obj).length > 0 && Object.entries(obj)[0].length > 0;
 
 const buildConfigTree = (variable: ConfigNode): ConfigNode => {
   let obj = {};
 
   for (const [key, value] of Object.entries(variable)) {
-    let kid = {};
-    if (isConfigValue(value)) {
+    let childItem = {};
+
+    if (typeof value === "string") {
+      childItem = { [key]: process.env[value] };
+    } else if (isConfigValue(value)) {
       const configValue = value as ConfigValue;
       const envValue = process.env[value.env];
 
       if (configValue.required && envValue === undefined)
         throw new Error(
-          `configurator variable ${key} is required but ${value.env} is not set`
+          `configurator variable '${key}' is required but '${value.env}' is not set`
         );
 
-      Object.assign(kid, {
+      const typeFunc = value.type === undefined ? String : value.type;
+
+      childItem = {
         [key]:
           envValue === undefined
-            ? value.type(value.default)
+            ? typeFunc(value.default)
             : value.type(envValue),
-      });
+      };
     } else if (isConfigNode(value)) {
-      kid = { [key]: buildConfigTree(value) };
+      childItem = { [key]: buildConfigTree(value) };
+    } else {
+      console.error(`???`);
     }
 
-    Object.assign(obj, kid);
+    Object.assign(obj, childItem);
   }
 
   return obj;
@@ -64,14 +74,7 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
 export const configurator = (opts: ConfiguratorConfig): ConfigNode => {
   dotenv.config(opts.envOpts);
 
-  let test = buildConfigTree(opts.variables);
-  console.log(`test`, test);
-  console.log(`test`);
-
-  let vars = {};
-  Object.assign(vars, buildConfigTree(opts.variables));
-
-  return vars as ConfigNode;
+  return Object.assign({}, buildConfigTree(opts.variables)) as ConfigNode;
 };
 
 /*
