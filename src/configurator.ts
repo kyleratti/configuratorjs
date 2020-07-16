@@ -83,19 +83,3 @@ export const configurator = (opts: ConfiguratorConfig): ConfigNode => {
 
   return Object.assign({}, buildConfigTree(opts.variables)) as ConfigNode;
 };
-
-/*
-export const config = configurator({
-  envOpts: {
-    file: ".env.production"
-  },
-  vars: {
-    reddit: {
-      userAgent: {
-        type: string,
-        required: true,
-      },
-    }
-  }
-})
-*/
