@@ -1,5 +1,4 @@
 import { configurator } from "../";
-import pkg from "../../package.json";
 
 describe("reddit tests", () => {
   test("load default snoowrap user agent", () => {
@@ -66,6 +65,6 @@ describe("reddit tests", () => {
     return expect(
       configurator<RedditUsernameConfig>({ variables: variables }).reddit
         .username
-    ).toBe(pkg.name);
+    ).toBe("@kyleratti/configurator");
   });
 });
