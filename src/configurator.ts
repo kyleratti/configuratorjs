@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 
-type ConfiguratorConfig = {
+interface ConfiguratorConfig {
   envOpts?: dotenv.DotenvConfigOptions;
   variables: ConfigNode;
-};
+}
 
-type ConfigValue = {
+interface ConfigValue {
   /**
    * The environment variable to pull from
-   * @example `NODE_ENV`
+   * @example "NODE_ENV"
    */
   env: string;
   /**
@@ -26,17 +26,24 @@ type ConfigValue = {
   required?: boolean;
   /**
    * The default value to use, if any, if the environment variable is not set
+   * @default undefined
    */
   default?: any;
-};
+}
 
-type ConfigNode = {
-  [key: string]: ConfigNode | ConfigValue | string;
-};
+export interface ConfigNode {
+  [key: string]: ConfigType;
+}
 
-const isConfigValue = (
-  obj: ConfigValue | ConfigNode | string
-): obj is ConfigValue => (obj as ConfigValue).env !== undefined;
+type ConfigType = ConfigNode | ConfigValue | string;
+
+const isConfigValue = (obj: ConfigType): obj is ConfigValue =>
+  (obj as ConfigValue).env !== undefined;
+// ): obj is ConfigValue => obj !== "string" && obj["env"] != undefined;
+
+// function isConfigValue(node: ConfigType): node is ConfigValue {
+//   return typeof node !== "string" && node["env"] != undefined;
+// }
 
 const isConfigNode = (
   obj: ConfigValue | ConfigNode | string
@@ -72,14 +79,16 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
       console.error(`???`);
     }
 
-    Object.assign(obj, childItem);
+    Object.assign(obj, childItem as ConfigValue);
   }
 
-  return obj;
+  return obj as ConfigNode;
 };
 
-export const configurator = (opts: ConfiguratorConfig): ConfigNode => {
+export const configurator = <T extends unknown>(
+  opts: ConfiguratorConfig
+): T => {
   dotenv.config(opts.envOpts);
 
-  return Object.assign({}, buildConfigTree(opts.variables)) as ConfigNode;
+  return Object.assign({}, buildConfigTree(opts.variables)) as T;
 };

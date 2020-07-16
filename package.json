@@ -1,16 +1,28 @@
 {
-  "name": "configuratorjs",
-  "version": "1.0.0",
+  "name": "@kyleratti/configurator",
+  "version": "2.0.0",
   "description": "A generic environment variable configuration library",
   "main": "lib/index.js",
   "types": "dts/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "files": [
+    "lib/**/*",
+    "dts/**/*"
+  ],
   "scripts": {
     "clean": "rimraf ./lib/* && rimraf ./dts/*",
     "prebuild": "npm run clean",
     "build": "tsc -p src",
+    "build:watch": "tsc -p src -w",
+    "format": "prettier --write \"src/**/*.ts\"",
     "prewatch": "npm run clean",
+    "prerelease": "npm run build",
+    "release": "",
     "test": "jest",
-    "watch": "tsc -p src -w"
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
