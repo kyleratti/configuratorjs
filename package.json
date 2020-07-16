@@ -1,0 +1,35 @@
+{
+  "name": "configuratorjs",
+  "version": "1.0.0",
+  "description": "A generic environment variable configuration library",
+  "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "scripts": {
+    "clean": "rimraf ./lib/* && rimraf ./dts/*",
+    "prebuild": "npm run clean",
+    "build": "tsc -p src",
+    "prewatch": "npm run clean",
+    "test": "jest",
+    "watch": "tsc -p src -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyleratti/configuratorjs.git"
+  },
+  "author": "Kyle Ratti",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/kyleratti/configuratorjs/issues"
+  },
+  "homepage": "https://github.com/kyleratti/configuratorjs#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.4",
+    "jest": "^26.1.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.1.2",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

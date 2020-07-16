@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "stripInternal": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "../lib",
+    "sourceMap": true
+  },
+  "exclude": []
+}
