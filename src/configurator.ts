@@ -39,11 +39,6 @@ type ConfigType = ConfigNode | ConfigValue | string;
 
 const isConfigValue = (obj: ConfigType): obj is ConfigValue =>
   (obj as ConfigValue).env !== undefined;
-// ): obj is ConfigValue => obj !== "string" && obj["env"] != undefined;
-
-// function isConfigValue(node: ConfigType): node is ConfigValue {
-//   return typeof node !== "string" && node["env"] != undefined;
-// }
 
 const isConfigNode = (
   obj: ConfigValue | ConfigNode | string
@@ -92,3 +87,13 @@ export const configurator = <T extends unknown>(
 
   return Object.assign({}, buildConfigTree(opts.variables)) as T;
 };
+
+/**
+ * Combines multiple `configurator` objects into a single object
+ *
+ * NOTE: duplicate keys from later parameters will overwrite keys from earlier parameters
+ * @param configs The `configurator` objects to combine
+ * @return object[]
+ */
+export const combinator = (...configs: object[]) =>
+  Object.assign({}, ...configs);
