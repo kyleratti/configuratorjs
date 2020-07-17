@@ -18,8 +18,7 @@ describe("reddit tests", () => {
     };
 
     return expect(
-      configurator<DefaultOnMissingVarConfig>({ variables: variables }).snoowrap
-        .userAgent
+      configurator<DefaultOnMissingVarConfig>(variables).snoowrap.userAgent
     ).toEqual(variables.snoowrap.userAgent.default);
   });
 
@@ -63,8 +62,7 @@ describe("reddit tests", () => {
     };
 
     return expect(
-      configurator<RedditUsernameConfig>({ variables: variables }).reddit
-        .username
+      configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe("@kyleratti/configurator");
   });
 });
