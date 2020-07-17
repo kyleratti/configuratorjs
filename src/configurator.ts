@@ -1,8 +1,5 @@
-import dotenv from "dotenv";
-
 interface ConfiguratorConfig {
-  envOpts?: dotenv.DotenvConfigOptions;
-  variables: ConfigNode;
+  [key: string]: ConfigNode;
 }
 
 interface ConfigValue {
@@ -80,13 +77,15 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
   return obj as ConfigNode;
 };
 
+/**
+ * Generates an object containing the specified application configuration
+ *
+ * NOTE: This module will not automatically read in any environment variables from external sources (e.g. via `dotenv`)
+ * @param config
+ */
 export const configurator = <T extends unknown>(
-  opts: ConfiguratorConfig
-): T => {
-  dotenv.config(opts.envOpts);
-
-  return Object.assign({}, buildConfigTree(opts.variables)) as T;
-};
+  config: ConfiguratorConfig
+): T => Object.assign({}, buildConfigTree(config)) as T;
 
 /**
  * Combines multiple `configurator` objects into a single object
