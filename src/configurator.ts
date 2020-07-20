@@ -84,6 +84,7 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
  * @generic `type` - The type the configurator should produce. This is included for typing purposes.
  * @param config - The configuration to build the configurator from
  * @example type WebConfig { port: number; };
+ * const web = configurator<WebConfig>({ port: { env: "PORT", type: Number, required: true } })
  */
 export const configurator = <T extends unknown>(
   config: ConfiguratorConfig
@@ -98,5 +99,5 @@ export const configurator = <T extends unknown>(
  * @example const [appConfig, moduleConfig]  = [configurator(...), configurator(...)];
  * const config = combinator(appConfig, moduleConfig);
  */
-export const combinator = (...configs: object[]) =>
+export const combinator = (...configs: object[]): ConfiguratorConfig =>
   Object.assign({}, ...configs);
