@@ -81,7 +81,9 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
  * Generates an object containing the specified application configuration
  *
  * NOTE: This module will not automatically read in any environment variables from external sources (e.g. via `dotenv`)
- * @param config
+ * @generic `type` - The type the configurator should produce. This is included for typing purposes.
+ * @param config - The configuration to build the configurator from
+ * @example type WebConfig { port: number; };
  */
 export const configurator = <T extends unknown>(
   config: ConfiguratorConfig
@@ -93,6 +95,8 @@ export const configurator = <T extends unknown>(
  * NOTE: duplicate keys from later parameters will overwrite keys from earlier parameters
  * @param configs The `configurator` objects to combine
  * @return object[]
+ * @example const [appConfig, moduleConfig]  = [configurator(...), configurator(...)];
+ * const config = combinator(appConfig, moduleConfig);
  */
 export const combinator = (...configs: object[]) =>
   Object.assign({}, ...configs);
