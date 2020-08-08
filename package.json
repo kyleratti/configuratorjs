@@ -16,10 +16,7 @@
     "prepare": "npm run build && npm run test",
     "prewatch": "npm run clean",
     "prerelease": "npm run build",
-    "release": "",
     "test": "jest",
-    "preversion": "npm run build",
-    "postversion": "git push && git push --tags && npm publish",
     "semantic-release": "semantic-release"
   },
   "repository": {
