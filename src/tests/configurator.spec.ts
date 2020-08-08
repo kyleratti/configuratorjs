@@ -45,7 +45,7 @@ describe("reddit tests", () => {
     }).toThrow();
   });
 
-  test("load reddit username as 'configuratorjs'", () => {
+  test("load reddit username as '@kyleratti/configurator'", () => {
     type RedditUsernameConfig = {
       reddit: {
         username: string;
