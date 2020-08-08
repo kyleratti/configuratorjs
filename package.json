@@ -1,12 +1,9 @@
 {
   "name": "@kyleratti/configurator",
-  "version": "3.0.0",
+  "version": "0.0.0-development",
   "description": "A generic environment variable configuration library",
   "main": "lib/index.js",
   "types": "dts/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "files": [
     "lib/**/*",
     "dts/**/*"
@@ -16,16 +13,18 @@
     "prebuild": "npm run clean",
     "build": "tsc -p src",
     "build:watch": "tsc -p src -w",
+    "prepare": "npm run build && npm run test",
     "prewatch": "npm run clean",
     "prerelease": "npm run build",
     "release": "",
     "test": "jest",
     "preversion": "npm run build",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags && npm publish",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kyleratti/configuratorjs.git"
+    "url": "https://github.com/kyleratti/configuratorjs.git"
   },
   "author": "Kyle Ratti",
   "license": "GPL-3.0",
@@ -34,11 +33,13 @@
   },
   "homepage": "https://github.com/kyleratti/configuratorjs#readme",
   "devDependencies": {
+    "@semantic-release/git": "^9.0.0",
     "@types/jest": "^26.0.4",
     "dotenv": "^8.2.0",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
+    "semantic-release": "^17.1.1",
     "ts-jest": "^26.1.2",
     "typescript": "^3.9.6"
   },
