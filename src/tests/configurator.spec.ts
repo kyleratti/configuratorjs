@@ -1,4 +1,4 @@
-import { configurator } from "../";
+import configurator from "../";
 
 describe("reddit tests", () => {
   test("load default snoowrap user agent", () => {

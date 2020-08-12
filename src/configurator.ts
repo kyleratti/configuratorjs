@@ -83,9 +83,8 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
  * NOTE: This module will not automatically read in any environment variables from external sources (e.g. via `dotenv`)
  * @param config
  */
-export const configurator = <T extends unknown>(
-  config: ConfiguratorConfig
-): T => Object.assign({}, buildConfigTree(config)) as T;
+const configurator = <T extends unknown>(config: ConfiguratorConfig): T =>
+  Object.assign({}, buildConfigTree(config)) as T;
 
 /**
  * Combines multiple `configurator` objects into a single object
@@ -94,5 +93,7 @@ export const configurator = <T extends unknown>(
  * @param configs The `configurator` objects to combine
  * @return object[]
  */
-export const combinator = (...configs: object[]) =>
-  Object.assign({}, ...configs);
+const combinator = (...configs: object[]) => Object.assign({}, ...configs);
+
+export default configurator;
+export { combinator, configurator };
