@@ -92,6 +92,9 @@ const configurator = <T extends unknown>(config: ConfiguratorConfig): T =>
  * NOTE: duplicate keys from later parameters will overwrite keys from earlier parameters
  * @param configs The `configurator` objects to combine
  * @return object[]
+ *
+ * @beta
+ * @todo Support for somehow combining types automatically
  */
 const combinator = (...configs: object[]) => Object.assign({}, ...configs);
 
