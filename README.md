@@ -13,7 +13,7 @@
   - [`globalConfig.ts`](#globalconfigts)
 - [To Do](#to-do)
 
-![CI/CD Release](https://github.com/kyleratti/configuratorjs/workflows/CI/CD%20Release/badge.svg) ![npm (scoped)](https://img.shields.io/npm/v/@kyleratti/configurator) ![NPM](https://img.shields.io/npm/l/@kyleratti/configurator)
+![CI/CD](https://github.com/kyleratti/configuratorjs/workflows/CI/CD/badge.svg) ![npm (scoped)](https://img.shields.io/npm/v/@kyleratti/configurator) ![NPM](https://img.shields.io/npm/l/@kyleratti/configurator)
 
 A generic environment variable configuration library. There weren't enough already, so I built my own.
 
