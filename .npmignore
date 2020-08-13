@@ -1,7 +1,10 @@
+.github/
 .vscode/
 node_modules/
+src/
 
 .env
+.env*
 .gitignore
 .releaserc.json
 jest.config.jest
