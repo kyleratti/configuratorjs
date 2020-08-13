@@ -1,6 +1,6 @@
-import configurator from "../";
+import { combinator, configurator } from "../";
 
-describe("reddit tests", () => {
+describe("reddit environment variable test", () => {
   test("load default snoowrap user agent", () => {
     type DefaultOnMissingVarConfig = {
       snoowrap: {
@@ -64,5 +64,42 @@ describe("reddit tests", () => {
     return expect(
       configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe("@kyleratti/configurator");
+  });
+});
+
+describe("combinator", () => {
+  test("combine two generic objects", () => {
+    type GeneralConfigOne = {
+      option: {
+        key: boolean;
+      };
+    };
+
+    type GeneralConfigTwo = {
+      optionTwo: {
+        key: string;
+      };
+    };
+
+    const configOne = configurator<GeneralConfigOne>({
+      option: {
+        key: {
+          env: "REDDIT_USERNAME",
+        },
+      },
+    });
+
+    const configTwo = configurator<GeneralConfigTwo>({
+      optionTwo: {
+        key: {
+          env: "REDDIT_USERNAME",
+        },
+      },
+    });
+
+    const combined = combinator(configOne, configTwo);
+
+    expect(combined.option.key).toBeDefined();
+    expect(combined.optionTwo.key).toBeDefined();
   });
 });
