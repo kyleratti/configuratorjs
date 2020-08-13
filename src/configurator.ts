@@ -22,7 +22,7 @@ interface ConfigValue {
    */
   required?: boolean;
   /**
-   * The default value to use, if any, if the environment variable is not set
+   * The default value to use, if any, should the environment variable not be set
    * @default undefined
    */
   default?: any;
@@ -34,9 +34,17 @@ export interface ConfigNode {
 
 type ConfigType = ConfigNode | ConfigValue | string;
 
+/**
+ * Determines if the provided `obj` is a `ConfigValue` object
+ * @param obj The object to evaluate
+ */
 const isConfigValue = (obj: ConfigType): obj is ConfigValue =>
   (obj as ConfigValue).env !== undefined;
 
+/**
+ * Determines if the provided `obj` is a `ConfigNode` object
+ * @param obj The object to evaluate
+ */
 const isConfigNode = (
   obj: ConfigValue | ConfigNode | string
 ): obj is ConfigNode =>
@@ -82,6 +90,7 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
  *
  * NOTE: This module will not automatically read in any environment variables from external sources (e.g. via `dotenv`)
  * @param config
+ * @throws `Error` If a config item is required but not set
  */
 const configurator = <T extends unknown>(config: ConfiguratorConfig): T =>
   Object.assign({}, buildConfigTree(config)) as T;
