@@ -65,6 +65,28 @@ describe("reddit environment variable test", () => {
       configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe("@kyleratti/configurator");
   });
+
+  test("load environment variable as boolean", () => {
+    type RedditUsernameConfig = {
+      reddit: {
+        username: string;
+      };
+    };
+
+    const variables = {
+      reddit: {
+        username: {
+          env: "REDDIT_USERNAME",
+          type: Boolean,
+          required: true,
+        },
+      },
+    };
+
+    return expect(
+      configurator<RedditUsernameConfig>(variables).reddit.username
+    ).toBe(true);
+  });
 });
 
 describe("nested environment variable test", () => {
