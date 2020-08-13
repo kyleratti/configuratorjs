@@ -65,8 +65,10 @@ describe("reddit environment variable test", () => {
       configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe("@kyleratti/configurator");
   });
+});
 
-  test("nested snoowrap user agent", () => {
+describe("nested environment variable test", () => {
+  test("load default snoowrap user agent", () => {
     type DefaultOnMissingVarConfig = {
       snoowrap: {
         user: {
