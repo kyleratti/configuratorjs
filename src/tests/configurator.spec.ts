@@ -87,6 +87,31 @@ describe("reddit environment variable test", () => {
       configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe(true);
   });
+
+  test("validate username against list of valid usernames", () => {
+    type RedditUsernameConfig = {
+      reddit: {
+        username: string;
+      };
+    };
+
+    const variables = {
+      reddit: {
+        username: {
+          env: "REDDIT_USERNAME",
+          required: true,
+        },
+      },
+    };
+
+    const validUsernames = ["@kyleratti/configurator", "configuratorjs"];
+
+    return expect(
+      validUsernames.includes(
+        configurator<RedditUsernameConfig>(variables).reddit.username
+      )
+    ).toBe(true);
+  });
 });
 
 describe("nested environment variable test", () => {
