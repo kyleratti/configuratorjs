@@ -151,7 +151,7 @@ class Server {
     // number value of process.env.APP_ADMIN_PORT or the default
 
     console.log(`Admin Password: ${appConfig.admin.password}`);
-    // string value of process.env.APP_ADMIN_PASSWORD or it will throw a new Error
+    // string value of process.env.APP_ADMIN_PASSWORD
   };
 }
 ```
