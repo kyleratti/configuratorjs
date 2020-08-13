@@ -65,6 +65,31 @@ describe("reddit environment variable test", () => {
       configurator<RedditUsernameConfig>(variables).reddit.username
     ).toBe("@kyleratti/configurator");
   });
+
+  test("nested snoowrap user agent", () => {
+    type DefaultOnMissingVarConfig = {
+      snoowrap: {
+        user: {
+          agent: string;
+        };
+      };
+    };
+
+    const variables = {
+      snoowrap: {
+        user: {
+          agent: {
+            env: "SNOOWRAP_USER_AGENT_NOTREAL",
+            default: "configurator_test",
+          },
+        },
+      },
+    };
+
+    return expect(
+      configurator<DefaultOnMissingVarConfig>(variables).snoowrap.user.agent
+    ).toEqual(variables.snoowrap.user.agent.default);
+  });
 });
 
 describe("combinator", () => {
