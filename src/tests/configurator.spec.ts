@@ -141,6 +141,85 @@ describe("nested environment variable test", () => {
   });
 });
 
+describe("validator tests", () => {
+  test("omitting validator just returns env value", () => {
+    type OmittedConfig = {
+      reddit: {
+        username: string;
+      };
+    };
+
+    const variables = {
+      reddit: { username: { env: "REDDIT_USERNAME", required: true } },
+    };
+
+    return expect(
+      typeof configurator<OmittedConfig>(variables).reddit.username
+    ).toBe("string");
+  });
+
+  test("Boolean validator", () => {
+    type BooleanConfig = {
+      reddit: { username: string };
+    };
+
+    const variables = {
+      reddit: {
+        username: {
+          env: "REDDIT_USERNAME",
+          required: true,
+          validator: true,
+          type: Boolean,
+        },
+      },
+    };
+
+    return expect(configurator<BooleanConfig>(variables).reddit.username).toBe(
+      true
+    );
+  });
+
+  test("Array validator", () => {
+    type ArrayConfig = {
+      reddit: { username: string };
+    };
+
+    const variables = {
+      reddit: {
+        username: {
+          env: "REDDIT_USERNAME",
+          required: true,
+          validator: ["@kyleratti/configurator", "tucker is a cute dog"],
+        },
+      },
+    };
+
+    return expect(() => {
+      configurator<ArrayConfig>(variables);
+    }).not.toThrowError();
+  });
+
+  test("Function validator", () => {
+    type FunctionConfig = { reddit: { username: string } };
+
+    const variables = {
+      reddit: {
+        username: {
+          env: "REDDIT_USERNAME",
+          required: true,
+          validator: (input: String) => {
+            return input.toLowerCase() === "@kyleratti/configurator";
+          },
+        },
+      },
+    };
+
+    return expect(() => {
+      configurator<FunctionConfig>(variables);
+    }).not.toThrowError();
+  });
+});
+
 describe("combinator", () => {
   test("combine two generic objects", () => {
     type GeneralConfigOne = {
