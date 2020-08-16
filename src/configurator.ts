@@ -22,6 +22,17 @@ interface ConfigValue {
    */
   required?: boolean;
   /**
+   * The `Array`, `boolean`, or custom `Function` to validate the expected value of the environment variable.
+   * When the validator is run, the `type` property of the `ConfigValue` has already converted the environment variable.
+   * By default, no validation will be done if this is not defined.
+   * @example [0, 2, 34]
+   * @example true
+   * @example ["dogs", "cats", "rabbits"]
+   * @example (val: String) => { return val.toLowerCase() === "dogs" }
+   * @default null
+   */
+  validator?: any[] | boolean | Function;
+  /**
    * The default value to use, if any, should the environment variable not be set
    * @default undefined
    */
@@ -55,11 +66,11 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
 
   for (const [key, value] of Object.entries(variable)) {
     let childItem = {};
+    const configValue = value as ConfigValue;
 
     if (typeof value === "string") {
       childItem = { [key]: process.env[value] };
     } else if (isConfigValue(value)) {
-      const configValue = value as ConfigValue;
       const envValue = process.env[value.env];
 
       if (configValue.required && envValue === undefined)
@@ -68,11 +79,39 @@ const buildConfigTree = (variable: ConfigNode): ConfigNode => {
         );
 
       const typeFunc = value.type === undefined ? String : value.type;
+      const setValue =
+        envValue === undefined ? typeFunc(value.default) : typeFunc(envValue);
 
       childItem = {
-        [key]:
-          envValue === undefined ? typeFunc(value.default) : typeFunc(envValue),
+        [key]: setValue,
       };
+
+      // BEGIN: validation
+      const validator = configValue.validator;
+
+      if (validator !== undefined) {
+        // If this ConfigValue has no validator, skip testing its validity
+        let isValid = true;
+
+        if (typeof validator === "boolean") {
+          // if configValue.validator is a boolean, make sure the value matches it
+          if (setValue !== validator) isValid = false;
+        } else if (Array.isArray(validator)) {
+          // if configValue.validator is an array, make sure the value is contained in the validator array
+          if (!validator.includes(setValue)) isValid = false;
+        } else if (typeof validator === "function") {
+          // if configValue.validator is a function, we have our own validation logic
+          // regardless of the custom validation logic, the validator is always
+          // expected to return true or false
+          if (validator(setValue) === false) isValid = false;
+        } else throw new Error(`configurator validator not matched to checker`);
+
+        if (!isValid)
+          throw new Error(
+            `configurator variable '${key}' is set to '${envValue}' but failed validation`
+          );
+      }
+      // END: validation
     } else if (isConfigNode(value)) {
       childItem = { [key]: buildConfigTree(value) };
     } else {
