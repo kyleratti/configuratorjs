@@ -19,12 +19,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Test
-        run: npm run test
+      - name: Install, build, and test
+        run: npm ci
       - name: Release
         if: github.ref == 'refs/heads/master'
         env:
