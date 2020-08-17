@@ -58,17 +58,17 @@ The `ConfigValue` of your configurator is what is used by the library to build a
 
 Each `ConfigValue` is an object containing:
 
-| Property    | Type                                | Required | Default       | Description                                                                                                                                                            |
-| ----------- | ----------------------------------- | -------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `env`       | `string`                            | `Yes`    |               | The environment variable to read from `process.env`                                                                                                                    |
-| `type`      | `Function`                          | `No`     | `String(...)` | The function that should be used to convert the `env` variable                                                                                                         |
-| `required`  | `boolean`                           | `No`     | `false`       | Whether or not this environment variable is required to be set. If this is `true` and the environment variable is not set, `configurator(...)` will `throw` an `Error` |
-| `validator` | `any[]`, ` boolean`, or ` Function` | `No`     | `undefined`   | The validator, if any, to run on the environment variable after it has been read in and converted via `type`.                                                          |
-| `default`   | `any`                               | `No`     |               | The default value to use, if any, should the environment variable not be set                                                                                           |
+| Property    | Type                              | Required | Default       | Description                                                                                                                                                            |
+| ----------- | --------------------------------- | -------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `env`       | `string`                          | `Yes`    |               | The environment variable to read from `process.env`                                                                                                                    |
+| `type`      | `Function`                        | `No`     | `String(...)` | The function that should be used to convert the `env` variable                                                                                                         |
+| `required`  | `boolean`                         | `No`     | `false`       | Whether or not this environment variable is required to be set. If this is `true` and the environment variable is not set, `configurator(...)` will `throw` an `Error` |
+| `validator` | `any[]`, `boolean`, or `Function` | `No`     | `undefined`   | The validator, if any, to run on the environment variable after it has been read in and converted via `type`.                                                          |
+| `default`   | `any`                             | `No`     |               | The default value to use, if any, should the environment variable not be set                                                                                           |
 
 ### Custom Validators
 
-If you need to perform your own validation logic, you can do so by providing a `Function` to the `validator` property. The `Function` will be passed a single parameter, the value of `env` after it has been passed through your `type` function (or `String` by default:
+If you need to perform your own validation logic, you can do so by providing a `Function` to the `validator` property. The `Function` will be passed a single parameter, the value of `env` after it has been passed through your `type` function (or `String` by default):
 
 ```typescript
 const myCustomValidator = {
