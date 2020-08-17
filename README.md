@@ -3,7 +3,9 @@
 ![CI/CD](https://github.com/kyleratti/configuratorjs/workflows/CI/CD/badge.svg) ![npm (scoped)](https://img.shields.io/npm/v/@kyleratti/configurator) ![NPM](https://img.shields.io/npm/l/@kyleratti/configurator)
 
 - [configuratorjs](#configuratorjs)
-- [Dependencies](#dependencies)
+- [What this doesn't do](#what-this-doesnt-do)
+- [Frontend Warning](#frontend-warning)
+- [Dev Dependencies](#dev-dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Configurator Type](#configurator-type)
@@ -22,9 +24,19 @@ This library exists because I wanted the flexibility and security of reading in 
 
 By defining a `type` for a config, and a set of `parameters`, this library allows you to quickly build config structures from environment variables while including variable validation, variable requirements, defaults, and of course, TypeScript typings.
 
-# Dependencies
+# What this doesn't do
 
-- [dotenv](https://github.com/motdotla/dotenv)
+This library **does not** read in environment variables from a file for you. I recommend using [dotenv](https://github.com/motdotla/dotenv), however I decided to leave that up to you instead of packaging a runtime dependency.
+
+**I repeat: this library will only see variables already imported into `process.env`.** You will need to use another library to import variables from disk.
+
+# Frontend Warning
+
+This library assumes the environment variables live under `process.env`, meaning it's primarily built for NodeJS environments. That said, there's plenty of libraries that exist to expose or extend environment variables to frontend systems - for example, [Webpack Environment Plugin](https://webpack.js.org/plugins/environment-plugin/) can do this for Webpack-based builds.
+
+# Dev Dependencies
+
+- [dotenv](https://github.com/motdotla/dotenv): Used to automatically read in environment files for tests
 
 # Installation
 
