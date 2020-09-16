@@ -1,6 +1,6 @@
 {
   "name": "@kyleratti/configurator",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "A generic environment variable configuration library",
   "main": "lib/index.js",
   "types": "dts/index.d.ts",
